@@ -69,7 +69,7 @@ jobs:
       - name: Install requirements
         shell: bash # for Windows compatibility
         run: |
-          uv pip install ${{ matrix.os == 'cpu-latest' && '' || '--system' }} . --extra-index-url https://download.pytorch.org/whl/cpu
+          uv pip install ${{ matrix.os != 'cpu-latest' && '--system' || '' }} . --extra-index-url https://download.pytorch.org/whl/cpu
       - name: Check environment
         run: |
           yolo checks
@@ -128,7 +128,7 @@ jobs:
       - name: Install requirements
         shell: bash # for Windows compatibility
         run: |
-          uv pip install ${{ matrix.os == 'cpu-latest' && '' || '--system' }} -e ".[export]" "coverage[toml]" --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-best-match
+          uv pip install ${{ matrix.os != 'cpu-latest' && '--system' || '' }} -e ".[export]" "coverage[toml]" --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-best-match
       - name: Check environment
         run: |
           yolo checks
@@ -203,7 +203,7 @@ jobs:
           if [ "${{ matrix.torch }}" != "latest" ]; then
               torch="torch==${{ matrix.torch }} torchvision==${{ matrix.torchvision }}"
           fi
-          uv pip install ${{ matrix.os == 'cpu-latest' && '' || '--system' }} -e ".[export,solutions]" $torch pytest-cov --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-best-match
+          uv pip install ${{ matrix.os != 'cpu-latest' && '--system' || '' }} -e ".[export,solutions]" $torch pytest-cov --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-best-match
       - name: Check environment
         run: |
           yolo checks
@@ -321,7 +321,7 @@ jobs:
           if [ "${{ matrix.torch }}" != "latest" ]; then
               torch="torch==${{ matrix.torch }} torchvision==${{ matrix.torchvision }}"
           fi
-          uv pip install ${{ matrix.os == 'cpu-latest' && '' || '--system' }} -e ".[export,solutions]" $torch faster-coco-eval mlflow pytest-cov --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-best-match
+          uv pip install ${{ matrix.os != 'cpu-latest' && '--system' || '' }} -e ".[export,solutions]" $torch faster-coco-eval mlflow pytest-cov --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-best-match
       - name: Check environment
         run: |
           yolo checks
