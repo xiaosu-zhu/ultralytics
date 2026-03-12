@@ -58,14 +58,14 @@ jobs:
         python: ["3.12"]
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ matrix.python }}
-      - uses: astral-sh/setup-uv@v7
+          activate-environment: true
       - name: Install requirements
         shell: bash # for Windows compatibility
         run: |
-          uv pip install --system . --extra-index-url https://download.pytorch.org/whl/cpu
+          uv pip install . --extra-index-url https://download.pytorch.org/whl/cpu
       - name: Check environment
         run: |
           yolo checks
@@ -113,14 +113,14 @@ jobs:
         model: [yolo26n]
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ matrix.python }}
-      - uses: astral-sh/setup-uv@v7
+          activate-environment: true
       - name: Install requirements
         shell: bash # for Windows compatibility
         run: |
-          uv pip install --system -e ".[export]" "coverage[toml]" --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-best-match
+          uv pip install -e ".[export]" "coverage[toml]" --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-best-match
       - name: Check environment
         run: |
           yolo checks
@@ -179,10 +179,10 @@ jobs:
             torchvision: "0.9.0"
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ matrix.python }}
-      - uses: astral-sh/setup-uv@v7
+          activate-environment: true
       - name: Install requirements
         shell: bash # for Windows compatibility
         run: |
@@ -191,7 +191,7 @@ jobs:
           if [ "${{ matrix.torch }}" != "latest" ]; then
               torch="torch==${{ matrix.torch }} torchvision==${{ matrix.torchvision }}"
           fi
-          uv pip install --system -e ".[export,solutions]" $torch pytest-cov --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-best-match
+          uv pip install -e ".[export,solutions]" $torch pytest-cov --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-best-match
       - name: Check environment
         run: |
           yolo checks
@@ -294,10 +294,10 @@ jobs:
             torchvision: "0.25.0"
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ matrix.python }}
-      - uses: astral-sh/setup-uv@v7
+          activate-environment: true
       - name: Install requirements
         shell: bash # for Windows compatibility
         run: |
@@ -305,7 +305,7 @@ jobs:
           if [ "${{ matrix.torch }}" != "latest" ]; then
               torch="torch==${{ matrix.torch }} torchvision==${{ matrix.torchvision }}"
           fi
-          uv pip install --system -e ".[export,solutions]" $torch faster-coco-eval mlflow pytest-cov --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-best-match
+          uv pip install -e ".[export,solutions]" $torch faster-coco-eval mlflow pytest-cov --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-best-match
       - name: Check environment
         run: |
           yolo checks
