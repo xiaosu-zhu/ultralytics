@@ -799,7 +799,6 @@ class ClassificationDataset:
 
         try:
             check_file_speeds([file for (file, _) in self.samples[:5]], prefix=self.prefix)  # check image read speeds
-            path.unlink(missing_ok=True)
             cache = load_dataset_cache_file(path)  # attempt to load a *.cache file
             assert cache["version"] == DATASET_CACHE_VERSION  # matches current version
             assert cache["hash"] == get_hash([x[0] for x in self.samples])  # identical hash
