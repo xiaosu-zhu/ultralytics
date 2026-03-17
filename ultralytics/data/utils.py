@@ -16,6 +16,7 @@ from typing import Any
 import cv2
 import numpy as np
 from PIL import Image, ImageOps
+from joblib import Parallel, delayed
 
 from ultralytics.nn.autobackend import check_class_names
 from ultralytics.utils import (
@@ -142,12 +143,15 @@ def check_file_speeds(
 
 def get_hash(paths: list[str]) -> str:
     """Return a single hash value of a list of paths (files or dirs)."""
-    size = 0
-    for p in paths:
+    def worker(p):
         try:
-            size += os.stat(p).st_size
+            return os.stat(p).st_size
         except OSError:
-            continue
+            return 0
+    size = 0
+    gen = Parallel(-1, return_as="generator")(delayed(worker)(p) for p in paths)
+    for result in TQDM(gen, total=len(paths), desc="Dataset hash"):
+        size += result
     h = __import__("hashlib").sha256(str(size).encode())  # hash sizes
     h.update("".join(paths).encode())  # hash paths
     return h.hexdigest()  # return hash
